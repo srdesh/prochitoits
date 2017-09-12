@@ -1,29 +1,4 @@
 /*--------------------
-    google map api   |
-----------------------*/
-function myMap() {
-var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 18,
-          center: {lat: 23.793804, lng: 90.403835}
-        });
-
-var labels = '';
-var markers = locations.map(function(location, i) {
-          return new google.maps.Marker({
-            position: location,
-            label: labels[i % labels.length]
-          });
-        });
-var markerCluster = new MarkerClusterer(map, markers,
-            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-      }
-// nearest retailer latitude and longitude
-var locations = [
-  {lat: 23.793804, lng: 90.403835}
-]
-
-
-/*--------------------
          slider       |
 ----------------------*/
 $(function() {
@@ -38,218 +13,121 @@ $(function() {
 				});
 			});
 
-/*--------------------
-         skill bar     |
-----------------------*/
-  (function() {
-  
-    var Progress = function( element ) {
-      
-      this.context = element.getContext( "2d" );
-      this.refElement = element.parentNode;
-      this.loaded = 0;
-      this.start = 4.72;
-      this.width = this.context.canvas.width;
-      this.height = this.context.canvas.height;
-      this.total = parseInt( this.refElement.dataset.percent, 10 );
-      this.timer = null;
-      
-      this.diff = 0;
-      
-      this.init();  
-    };
-    
-    Progress.prototype = {
-      init: function() {
-        var self = this;
-        self.timer = setInterval(function() {
-          self.run(); 
-        }, 25);
-      },
-      run: function() {
-          var self = this;
-          
-          self.diff = ( ( self.loaded / 100 ) * Math.PI * 2 * 10 ).toFixed( 2 );  
-          self.context.clearRect( 0, 0, self.width, self.height );
-          self.context.lineWidth = 10;
-          self.context.fillStyle = "#7f8c8d";
-          self.context.strokeStyle = "#e67e22";
-          self.context.textAlign = "center";
-          
-          self.context.fillText( self.loaded + "%", self.width * .5, self.height * .5 + 2, self.width );
-          self.context.beginPath();
-          self.context.arc( 35, 35, 30, self.start, self.diff / 10 + self.start, false );
-          self.context.stroke();
-          
-          if( self.loaded >= self.total ) {
-            clearInterval( self.timer );
-          }
-          
-          self.loaded++;
-        }
-      };
-      
-      var CircularSkillBar = function( elements ) {
-        this.bars = document.querySelectorAll( elements );
-        if( this.bars.length > 0 ) {
-          this.init();
-        } 
-      };
-      
-    CircularSkillBar.prototype = {
-      init: function() {
-      this.tick = 25;
-      this.progress();    
-      },
-      progress: function() {
-      var self = this;
-      var index = 0;
-      var firstCanvas = self.bars[0].querySelector( "canvas" );
-      var firstProg = new Progress( firstCanvas );
-          
-          
-          
-        var timer = setInterval(function() {
-          index++;
-                  
-          var canvas = self.bars[index].querySelector( "canvas" );
-          var prog = new Progress( canvas );
-                
-            if( index == self.bars.length ) {
-              clearInterval( timer );
-            } 
-            
-        }, self.tick * 100);
-            
-      }
-    };
-      
-    document.addEventListener( "DOMContentLoaded", function() {
-      var circularBars = new CircularSkillBar( "#bars .bar" );
-    });
-  
-  })();
 
-/*--------------------
-         angular     |
-----------------------*/
-// app module
-var app = angular.module("pits", []);
+			/*--------------------
+			         Map       |
+			----------------------*/
+			function initMap() {
+			        var prochito = {lat: 23.793798, lng: 90.404037};
+			        var map = new google.maps.Map(document.getElementById('map'), {
+			          zoom: 17,
+			          center: prochito,
+								styles: [
+							            {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
+							            {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
+							            {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
+							            {
+							              featureType: 'administrative.locality',
+							              elementType: 'labels.text.fill',
+							              stylers: [{color: '#d59563'}]
+							            },
+							            {
+							              featureType: 'poi',
+							              elementType: 'labels.text.fill',
+							              stylers: [{color: '#d59563'}]
+							            },
+							            {
+							              featureType: 'poi.park',
+							              elementType: 'geometry',
+							              stylers: [{color: '#263c3f'}]
+							            },
+							            {
+							              featureType: 'poi.park',
+							              elementType: 'labels.text.fill',
+							              stylers: [{color: '#6b9a76'}]
+							            },
+							            {
+							              featureType: 'road',
+							              elementType: 'geometry',
+							              stylers: [{color: '#38414e'}]
+							            },
+							            {
+							              featureType: 'road',
+							              elementType: 'geometry.stroke',
+							              stylers: [{color: '#212a37'}]
+							            },
+							            {
+							              featureType: 'road',
+							              elementType: 'labels.text.fill',
+							              stylers: [{color: '#9ca5b3'}]
+							            },
+							            {
+							              featureType: 'road.highway',
+							              elementType: 'geometry',
+							              stylers: [{color: '#746855'}]
+							            },
+							            {
+							              featureType: 'road.highway',
+							              elementType: 'geometry.stroke',
+							              stylers: [{color: '#1f2835'}]
+							            },
+							            {
+							              featureType: 'road.highway',
+							              elementType: 'labels.text.fill',
+							              stylers: [{color: '#f3d19c'}]
+							            },
+							            {
+							              featureType: 'transit',
+							              elementType: 'geometry',
+							              stylers: [{color: '#2f3948'}]
+							            },
+							            {
+							              featureType: 'transit.station',
+							              elementType: 'labels.text.fill',
+							              stylers: [{color: '#d59563'}]
+							            },
+							            {
+							              featureType: 'water',
+							              elementType: 'geometry',
+							              stylers: [{color: '#17263c'}]
+							            },
+							            {
+							              featureType: 'water',
+							              elementType: 'labels.text.fill',
+							              stylers: [{color: '#515c6d'}]
+							            },
+							            {
+							              featureType: 'water',
+							              elementType: 'labels.text.stroke',
+							              stylers: [{color: '#17263c'}]
+							            }
+							          ]
 
-// member controller
-app.controller ('profileController', function(){
-  this.entityList = profileList;
-});
+			  						});
 
-// client controller
-app.controller ('clientController', function(){
-  this.reviewerList = clientList;
-});
+							var contentString =
+								'<div id="content">'+
+							 			'<div id="bodyContent">'+
+							 					'<p><b>Prochito ITS</b></p>'+
+												'<p>Contact: +88-019000000</p>'+
+												'<p>Address: 7th Floor, Hemlet Tower, Banani, Dhaka, Bangladesh</p>'+
+							 					'<p>Website: <a href="https://its.prochito.com">'+
+							 					'(last visited June 22, 2009).</p>'+
+							 			'</div>'+
+							 	'</div>';
 
-//skill controller
-app.controller('skillController', function(){
-  this.skills = skillList;
-});
+							 var infowindow = new google.maps.InfoWindow({
+								 content: contentString
+							 });
 
-// member list
-var profileList = [
-  {
-    name: 'Salman Rahman Desh',
-    photo: 'img/img-1.jpg',
-    rank: 'UI/UX Designer',
-    note: 'Hi, its Salman working as a UI/UX desginer at prochito its.',
-    github: 'www.github.com/salman',
-    twitter: 'www.twitter.com',
-    linkedin: 'www.linkedin.com'
-  },
-  {
-    name: 'Tahsin Hasan Rahit',
-    photo: 'img/img-1.jpg',
-    rank: 'Project Manager',
-    note: 'Working as a project manager is cool',
-    github: 'www.github.com/rahit',
-    twitter: 'www.twitter.com',
-    linkedin: 'www.linkedin.com'
-  },
-  {
-    name: 'Tawseef Hasan',
-    photo: 'img/img-1.jpg',
-    rank: 'Back end developer',
-    note: 'I work as a backend developer and sing opera',
-    github: 'www.github.com/tawseef',
-    twitter: 'www.twitter.com',
-    linkedin: 'www.linkedin.com'
-  },
-  {
-    name: 'Sadman Hasan',
-    photo: 'img/img-1.jpg',
-    rank: 'Mobile Apps developer',
-    note: 'I do like to play fifa in offtime and like to eat',
-    github: 'www.github.com/sadman',
-    twitter: 'www.twitter.com',
-    linkedin: 'www.linkedin.com'
-  },
-  {
-    name: 'Zahin',
-    photo: 'img/img-1.jpg',
-    rank: 'Tester',
-    note: 'Mammay boy and I love to eat burger',
-    github: 'www.github.com/zahin',
-    twitter: 'www.twitter.com',
-    linkedin: 'www.linkedin.com'
-  },
-  {
-    name: 'Zafra Apu',
-    photo: 'img/img-1.jpg',
-    rank: 'Senior Tester',
-    note: 'Full time mother and housewife as well as tester',
-    github: 'www.github.com/zafra',
-    twitter: 'www.twitter.com',
-    linkedin: 'www.linkedin.com'
-  },
-    {
-    name: 'Zafra Apu',
-    photo: 'img/img-1.jpg',
-    rank: 'Senior Tester',
-    note: 'Full time mother and housewife as well as tester',
-    github: 'www.github.com/zafra',
-    twitter: 'www.twitter.com',
-    linkedin: 'www.linkedin.com'
-  }
-]
+				       var marker = new google.maps.Marker({
+				          position: prochito,
+				          map: map
+				       });
 
-var clientList = [
-  {
-    name: 'Amanda Cerny',
-    photo: 'img/cimg-1.jpg',
-    comment: 'Being a popular playboy model I was concerning to have a website of my own. I was searching for a firm who can full-fill my requirements and Prochito ITS successfully served my demands. Best wishes for this awesome team.'
-  },
-  {
-    name: 'Romio Juliet',
-    photo: 'img/cimg-2.jpg',
-    comment: 'Very good team with quality service and all. I really love to recommand them for your development works.'
-  }
-]
+				       infowindow.open(map, marker);
+							 marker.addListener('click', function() {
+				          infowindow.open(map, marker);
+				       });
 
-var skillList = [
-  {
-    name: 'HTML',
-    percent: '100%'
-  },
-  {
-    name: 'JS',
-    percent: '80%'
-  },
-  {
-    name: 'CSS',
-    percent: '100%'
-  },
-  {
-    name: 'AngularJS',
-    percent: '70%'
-  },
-  {
-    name: 'php',
-    percent: '70%'
-  }
-]
+			      }
